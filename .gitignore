@@ -1,0 +1,23 @@
+# Model checkpoints
+models/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# Cache
+.cache/
+huggingface/
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
