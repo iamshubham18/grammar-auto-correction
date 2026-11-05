@@ -1,118 +1,112 @@
 # Grammar Auto-Correction using NLP and T5
 
-An NLP-based grammar correction application built using a fine-tuned **T5-small Transformer model**. The application detects grammatical errors, generates corrected sentences, and highlights the changes between the original and corrected text using an interactive Gradio interface.
+An NLP-based grammar correction application powered by a fine-tuned **T5-small Transformer model**. It detects grammatical errors in English sentences and generates corrected versions, with visual highlighting to show the changes.
 
-## Project Overview
+## Overview
 
-This project explores the use of Transformer-based sequence-to-sequence models for Automatic Grammatical Error Correction (GEC).
+The project explores how Transformer-based sequence-to-sequence models can improve English grammar correction.
 
-The application accepts one or multiple sentences, processes them using a fine-tuned T5-small model, and generates grammatically improved versions. It also uses Python's `difflib` library to identify and highlight changes.
+The application uses a fine-tuned T5-small model trained on the C4_200M grammar correction dataset. Two training experiments were conducted using 5,000 and 20,000 sentence pairs, and their performance was evaluated using the JFLEG dataset and GLEU metric.
 
 ## Features
 
-- Automatic grammar correction using a fine-tuned T5 model.
-- Supports multiple sentences in a single input.
-- Highlights deleted words in **red**.
-- Highlights inserted words in **green**.
+- English grammar error detection and correction.
+- Transformer-based text generation using T5-small.
+- Fine-tuned models trained on different dataset sizes.
 - Interactive web interface built with Gradio.
+- Visual highlighting of deleted and inserted text.
+- Support for multiple sentences.
 - Local model inference.
-- Evaluation using the GLEU metric.
 
 ## Technology Stack
 
-| Component | Technology |
+| Category | Technologies |
 |---|---|
 | Programming Language | Python |
-| NLP Architecture | T5-small Transformer |
-| Deep Learning Framework | PyTorch |
-| Model Library | Hugging Face Transformers |
-| Training Dataset | C4_200M |
-| Evaluation Dataset | JFLEG |
-| Evaluation Metric | GLEU |
-| Web Interface | Gradio |
-| Text Difference | Python difflib |
-| Training Environment | Google Colab (T4 GPU) |
+| NLP / Deep Learning | PyTorch, Hugging Face Transformers |
+| Model | T5-small |
+| Dataset | C4_200M |
+| Evaluation | JFLEG, GLEU |
+| Interface | Gradio |
+| Development | Google Colab, Jupyter Notebook |
 
-## Model Training
+## Model Training Experiments
 
-Two fine-tuning experiments were conducted using the C4_200M grammar correction dataset.
+Two independent fine-tuning experiments were conducted using T5-small.
 
-### Experiment 1: Initial Fine-tuning
+### Experiment 1: 5K Training
 
-| Parameter | Configuration |
+| Parameter | Value |
 |---|---|
-| Base Model | T5-small |
-| Training Examples | 5,000 |
+| Base model | T5-small |
+| Training samples | 5,000 |
 | Epochs | 1 |
-| Batch Size | 32 |
-| Learning Rate | 3e-4 |
-| Maximum Sequence Length | 64 |
-| Training Loss | 0.9281 |
+| Batch size | 32 |
+| Learning rate | 3e-4 |
+| Maximum sequence length | 64 |
+| Training loss | 0.9281 |
+| JFLEG GLEU | 0.6010 |
 
-### Experiment 2: Improved Fine-tuning
+### Experiment 2: 20K Training
 
-| Parameter | Configuration |
+| Parameter | Value |
 |---|---|
-| Base Model | T5-small |
-| Training Examples | 20,000 |
-| Training Split | 19,000 |
-| Validation Split | 1,000 |
+| Base model | T5-small (fresh checkpoint) |
+| Dataset samples | 20,000 |
+| Training samples | 19,000 |
+| Validation samples | 1,000 |
 | Epochs | 3 |
-| Batch Size | 32 |
-| Learning Rate | 1e-4 |
-| Maximum Sequence Length | 64 |
-| Final Training Loss | 0.7682 |
+| Batch size | 32 |
+| Learning rate | 1e-4 |
+| Maximum sequence length | 64 |
+| Training loss | 0.7682 |
+| JFLEG GLEU | 0.6057 |
 
-**Note:** Experiment 2 started from a fresh T5-small checkpoint rather than continuing from the 5K fine-tuned model.
+## Evaluation Results
 
-## Model Evaluation
-
-The models were evaluated using the validation split of the JFLEG dataset, containing 755 examples.
-
-GLEU (Google-BLEU) was used to measure the similarity between generated corrections and reference corrections.
+The models were evaluated using the GLEU metric on the JFLEG validation dataset.
 
 | Model | GLEU Score |
 |---|---:|
-| Original T5-small (Baseline) | 0.5092 |
+| Original T5-small | 0.5092 |
 | Fine-tuned T5-small (5K) | 0.6010 |
 | Fine-tuned T5-small (20K) | **0.6057** |
 
-The 20K fine-tuned model achieved the highest GLEU score among the three evaluated models.
+The 20K experiment achieved the highest GLEU score among the three evaluated models.
 
-It improved the GLEU score by 0.0965 points compared with the original baseline.
+The results show improvement over the original T5-small baseline. However, the model can still produce incomplete or incorrect corrections for some complex sentences.
 
 ## Application Workflow
 
-1. The user enters one or more sentences.
+1. User enters an English sentence.
 2. The application adds the `grammar:` task prefix.
-3. The fine-tuned T5 model generates corrected sentences.
-4. Python's `difflib` identifies differences between the original and corrected text.
-5. Deleted and inserted words are highlighted.
-6. Gradio displays the original text, corrected text, and highlighted changes.
+3. The fine-tuned T5-small model generates a corrected sentence.
+4. The application compares the original and corrected text.
+5. Deleted and inserted words are visually highlighted.
 
 ## Project Structure
 
 ```text
 grammar-auto-correction/
 │
-├── app.py
-├── requirements.txt
-├── README.md
-├── LICENSE
-├── .gitignore
+├── models/
+│   └── gec_t5_improved/       # Local trained model checkpoint
 │
 ├── notebooks/
 │   ├── README.md
-│   └── train_5k_gec_colab.ipynb
+│   ├── train_5k_gec_colab.ipynb
+│   └── train_20k_gec_colab.ipynb
 │
-└── models/                 # Excluded from Git
-    ├── gec_t5/
-    └── gec_t5_improved/
+├── app.py                     # Gradio application
+├── requirements.txt
+├── .gitignore
+├── LICENSE
+└── README.md
 ```
 
-The trained model checkpoints are stored locally and excluded from Git because of their large file sizes.
+**Note:** Model checkpoints and virtual environments are excluded from Git.
 
-## Installation and Execution
+## Installation and Setup
 
 ### 1. Clone the repository
 
@@ -124,12 +118,18 @@ cd grammar-auto-correction
 
 ### 2. Create a virtual environment
 
-For Windows PowerShell:
+Windows:
 
 ```powershell
 python -m venv .venv
-
 .venv\Scripts\Activate.ps1
+```
+
+Linux / macOS:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
 ```
 
 ### 3. Install dependencies
@@ -138,25 +138,19 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-### 4. Add the trained model
+### 4. Add the trained model checkpoint
 
-The application requires the fine-tuned model checkpoint.
+The trained model weights are not included in this repository.
 
-Download or obtain the trained checkpoint and extract it into the following directory:
+Place the trained checkpoint in the following directory:
 
 ```text
-models/
-└── gec_t5_improved/
-    ├── config.json
-    ├── generation_config.json
-    ├── model.safetensors
-    ├── tokenizer_config.json
-    └── ...
+models/gec_t5_improved/
 ```
 
-Make sure the model directory contains the required model and tokenizer files.
+Alternatively, set the `GEC_MODEL_DIR` environment variable to the location of your downloaded checkpoint.
 
-**Note:** Model weights are not included in this GitHub repository.
+The 20K training notebook is provided in `notebooks/` to reproduce the training process.
 
 ### 5. Run the application
 
@@ -164,7 +158,7 @@ Make sure the model directory contains the required model and tokenizer files.
 python app.py
 ```
 
-Open the local Gradio URL displayed in the terminal:
+Open the local Gradio URL displayed in the terminal, usually:
 
 ```text
 http://127.0.0.1:7860
@@ -172,29 +166,28 @@ http://127.0.0.1:7860
 
 ## Limitations
 
-- The model may not correct every grammatical error.
-- Some corrections may be incomplete or inaccurate.
-- The model may occasionally overcorrect sentences.
-- Certain article, preposition, and pronoun errors remain challenging.
-- The training experiments use a subset of the C4_200M dataset.
-- The application primarily focuses on sentence-level grammar correction.
+- The model is trained specifically for English grammar correction.
+- Some complex grammatical errors may not be corrected accurately.
+- The model may occasionally generate incomplete or unintended corrections.
+- Performance depends on the training data and model configuration.
+- The application currently performs local inference.
 
 ## Future Improvements
 
-- Train with a larger and more diverse dataset.
-- Improve article, preposition, and pronoun correction.
-- Experiment with different Transformer architectures.
-- Evaluate using additional grammar correction benchmarks.
-- Optimize model inference and application performance.
-- Deploy the application for public use.
+- Train with a larger and more diverse grammar correction dataset.
+- Improve article, preposition, and pronoun error correction.
+- Experiment with larger Transformer models.
+- Add more comprehensive evaluation metrics.
+- Improve inference speed and application usability.
+- Explore deployment through a cloud-based API.
 
 ## Author
 
 **Shubham Kumar Verma**
 
 - GitHub: [@iamshubham18](https://github.com/iamshubham18)
-- Repository: [Grammar Auto-Correction](https://github.com/iamshubham18/grammar-auto-correction)
+- LinkedIn: [Shubham Kumar Verma](https://www.linkedin.com/in/shubham-kumar-verma-18vk/)
 
----
+## License
 
-*This project was developed as a practical exploration of Natural Language Processing, Transformer models, and automatic grammatical error correction.*
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -1,23 +1,28 @@
-# Model checkpoints
-models/
+# Environment variables
+.env
+.env.*
+
+# Python virtual environments
+.venv/
+venv/
+env/
 
 # Python cache
 __pycache__/
 *.py[cod]
 
-# Virtual environments
-.venv/
-venv/
-
-# Environment variables
-.env
-
-# Cache
+# Model weights and Hugging Face cache
+models/
 .cache/
 huggingface/
+
+# Node dependencies and build files
+node_modules/
+dist/
 
 # Logs
 *.log
 
 # OS files
 .DS_Store
+Thumbs.db
