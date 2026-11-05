@@ -2,26 +2,50 @@
 
 An NLP-based grammar correction application powered by a fine-tuned **T5-small Transformer model**. GrammarFix identifies grammatical errors and generates corrected text through a modern React interface and a locally running FastAPI backend.
 
-The project explores transformer-based Natural Language Processing, model fine-tuning, evaluation, and full-stack integration.
+The project explores transformer-based Natural Language Processing, model fine-tuning, model evaluation, and full-stack integration.
 
 ---
 
-## Features
+## 🚀 Project Demo
+
+### 🎬 Application Preview
+
+![GrammarFix Demo](docs/screenshots/grammarfix-demo.gif)
+
+### 📸 Application Screenshots
+
+**1. Home Interface**
+
+![GrammarFix Home](docs/screenshots/home.jpeg)
+
+**2. Grammar Correction Result**
+
+![Grammar Correction Result](docs/screenshots/correction-result.jpeg)
+
+**3. Highlighted Grammar Changes**
+
+![Grammar Changes](docs/screenshots/changes-highlight.png)
+
+---
+
+## ✨ Features
 
 - **AI-Powered Grammar Correction:** Corrects grammatical errors using a fine-tuned T5-small model.
 - **Multi-Sentence Support:** Processes multiple sentences and paragraphs.
 - **Change Highlighting:** Displays deleted words in red and inserted words in green.
-- **Modern React Interface:** Clean, responsive writing workspace.
-- **FastAPI Backend:** REST API for communication between the frontend and ML model.
+- **Modern React Interface:** Provides a clean, responsive writing workspace.
+- **FastAPI Backend:** Provides REST API endpoints for communication between the frontend and ML model.
 - **Local Model Inference:** Runs the trained model on your local machine.
 - **Copy and Clear:** Easily copy corrected text or reset the editor.
 - **Alternative Gradio Interface:** Retains the original Gradio application.
 
-## Technology Stack
+---
+
+## 🛠️ Technology Stack
 
 | Component | Technologies |
 |---|---|
-| Programming Language | Python, JavaScript |
+| Programming Languages | Python, JavaScript |
 | NLP Model | T5-small |
 | Deep Learning | PyTorch |
 | NLP Framework | Hugging Face Transformers |
@@ -33,38 +57,44 @@ The project explores transformer-based Natural Language Processing, model fine-t
 | Model Evaluation | JFLEG, GLEU |
 | Version Control | Git, GitHub |
 
-## System Architecture
+---
+
+## 🏗️ System Architecture
 
 ```text
-       USER
-         |
-         v
-  REACT FRONTEND
-  (Vite + Tailwind CSS)
-         |
-         | HTTP REST API
-         v
-   FASTAPI BACKEND
-         |
-         v
-    MODEL MODULE
-         |
-         v
-  FINE-TUNED T5-SMALL
-         |
-         v
-  CORRECTED TEXT
-         |
-         v
-  CHANGE HIGHLIGHTING
-         |
-         v
-   REACT FRONTEND
+              USER
+                |
+                v
+         REACT FRONTEND
+       (Vite + Tailwind CSS)
+                |
+                | HTTP REST API
+                v
+         FASTAPI BACKEND
+                |
+                v
+           MODEL MODULE
+                |
+                v
+       FINE-TUNED T5-SMALL
+                |
+                v
+         CORRECTED TEXT
+                |
+                v
+        CHANGE HIGHLIGHTING
+                |
+                v
+         REACT FRONTEND
 ```
 
-The React frontend sends text to the FastAPI backend. The backend passes the input to the locally loaded T5-small model, receives the corrected output, and generates a highlighted comparison.
+The React frontend sends text to the FastAPI backend through HTTP requests.
 
-## Project Structure
+The backend passes the input to the locally loaded T5-small model, receives the corrected output, and generates a highlighted comparison using Python's `difflib` module.
+
+---
+
+## 📁 Project Structure
 
 ```text
 grammar-auto-correction/
@@ -86,15 +116,24 @@ grammar-auto-correction/
 │
 ├── notebooks/
 │
+├── docs/
+│   └── screenshots/
+│       ├── home.jpeg
+│       ├── correction-result.jpeg
+│       ├── changes-highlight.png
+│       └── grammarfix-demo.gif
+│
 ├── app.py
 ├── requirements.txt
 ├── .gitignore
 └── README.md
 ```
 
-**Note:** Model weights are stored locally and excluded from GitHub. The `models/` directory must contain the trained model and tokenizer files before running the application.
+**Note:** Model weights are stored locally and excluded from GitHub. The `models/gec_t5_bea_final/` directory must contain the trained model and tokenizer files before running the application.
 
-## Model Training
+---
+
+## 🧠 Model Training
 
 The project uses the T5-small encoder-decoder Transformer architecture for grammatical error correction.
 
@@ -130,24 +169,30 @@ The final selected checkpoint was saved after the fifth epoch.
 
 The model was evaluated on the JFLEG benchmark using GLEU.
 
-- Evaluation examples: 755
-- GLEU with whitespace tokenization: 0.595
-- GLEU with Moses tokenization and normalization: 0.7822
+| Evaluation Metric | Result |
+|---|---:|
+| Evaluation Examples | 755 |
+| GLEU (Whitespace Tokenization) | 0.595 |
+| GLEU (Moses Tokenization + Normalization) | 0.7822 |
 
 **Note:** GLEU scores depend on tokenization and normalization settings. Scores produced using different evaluation configurations should not be directly compared.
 
-## Installation and Local Setup
+---
+
+## ⚙️ Installation and Local Setup
 
 ### Prerequisites
 
 - Python 3.10 or later
 - Node.js and npm
 - Git
+- Trained model and tokenizer files
 
 ### 1. Clone the Repository
 
 ```bash
 git clone https://github.com/iamshubham18/grammar-auto-correction.git
+
 cd grammar-auto-correction
 ```
 
@@ -159,7 +204,7 @@ Create a virtual environment:
 python -m venv .venv
 ```
 
-Activate it on Windows:
+Activate it on Windows PowerShell:
 
 ```powershell
 .venv\Scripts\Activate.ps1
@@ -173,33 +218,29 @@ pip install -r requirements.txt
 
 ### 3. Add the Trained Model
 
-Place the trained model and tokenizer files in:
+Place the trained model and tokenizer files inside:
 
 ```text
 models/gec_t5_bea_final/
 ```
 
-The model weights are not included in this GitHub repository. You must have access to the trained model files locally.
+The model weights are not included in this GitHub repository. You must have authorized access to the trained model files locally.
 
 ### 4. Start the FastAPI Backend
 
-From the project root:
+From the project root, run:
 
 ```bash
 python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
-Backend:
+Backend URL:
 
-```text
 http://127.0.0.1:8000
-```
 
 Interactive API documentation:
 
-```text
 http://127.0.0.1:8000/docs
-```
 
 ### 5. Start the React Frontend
 
@@ -207,19 +248,29 @@ Open another terminal:
 
 ```bash
 cd frontend
+```
+
+Install frontend dependencies:
+
+```bash
 npm install
+```
+
+Start the development server:
+
+```bash
 npm run dev
 ```
 
-Frontend:
+Frontend URL:
 
-```text
 http://localhost:5173
-```
 
 The frontend communicates with the FastAPI backend running locally.
 
-## API Endpoints
+---
+
+## 🔌 API Endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -245,13 +296,15 @@ The frontend communicates with the FastAPI backend running locally.
 }
 ```
 
-The highlighted HTML contains the original and corrected text with changes marked using deletion and insertion tags.
+The highlighted HTML represents the differences between the original and corrected text using deletion and insertion tags.
 
-## Alternative Gradio Interface
+---
+
+## 🖥️ Alternative Gradio Interface
 
 The original Gradio application is also available.
 
-From the project root:
+From the project root, run:
 
 ```bash
 python app.py
@@ -259,25 +312,29 @@ python app.py
 
 Open the local Gradio URL displayed in the terminal, typically:
 
-```text
 http://127.0.0.1:7860
-```
 
-## Current Limitations
+---
+
+## ⚠️ Current Limitations
 
 - The model may not identify every grammatical error.
-- Some corrections may introduce semantic changes or miss intended meaning.
+- Some corrections may introduce semantic changes or miss the intended meaning.
 - The current model input length is limited to 128 tokens, so longer inputs may be truncated.
-- Model inference speed depends on available hardware.
+- Model inference speed depends on the available hardware.
 - The application currently runs locally and requires the trained model files.
 
-## Dataset Licensing
+---
+
+## 📜 Dataset Licensing
 
 The BEA-2019 W&I and LOCNESS datasets have usage and redistribution restrictions. In particular, LOCNESS has restrictions on third-party redistribution.
 
 The trained model weights are therefore not distributed through this repository. Public model hosting or public inference deployment requires appropriate authorization for the datasets and resulting model use.
 
-## Future Improvements
+---
+
+## 🔮 Future Improvements
 
 - Improve correction accuracy through further model experimentation.
 - Evaluate using additional grammar correction benchmarks.
@@ -286,15 +343,17 @@ The trained model weights are therefore not distributed through this repository.
 - Optimize inference performance.
 - Explore deployment options after resolving dataset licensing requirements.
 
-## Author
+---
+
+## 👨‍💻 Author
 
 **Shubham Kumar Verma**
 
 B.Tech Computer Science and Engineering  
 Reva University
 
-- GitHub: [@iamshubham18](https://github.com/iamshubham18)
-- Project Repository: [Grammar Auto-Correction](https://github.com/iamshubham18/grammar-auto-correction)
+- **GitHub:** [@iamshubham18](https://github.com/iamshubham18)
+- **Project Repository:** [Grammar Auto-Correction](https://github.com/iamshubham18/grammar-auto-correction)
 
 ---
 
